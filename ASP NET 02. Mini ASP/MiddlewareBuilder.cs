@@ -17,7 +17,7 @@ class MiddlewareBuilder
             var middleware = middlewares.Pop();
             IMiddleware? middleWare = Activator.CreateInstance(middleware) as IMiddleware;
             middleWare.Next = handler;
-            handler = middleWare.Handle();
+            handler = middleWare.Handle;
         }
         return handler;
     }

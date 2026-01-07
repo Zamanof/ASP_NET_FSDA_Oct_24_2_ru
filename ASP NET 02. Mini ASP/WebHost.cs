@@ -30,7 +30,7 @@ class WebHost
 
     private void HandlerRequest(HttpListenerContext context)
     {
-        throw new NotImplementedException();
+        _handler.Invoke(context);
     }
 
     public void UseStartup<T>() where T : IStartup, new()
