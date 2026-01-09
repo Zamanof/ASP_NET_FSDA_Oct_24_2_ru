@@ -1,5 +1,5 @@
 ﻿@page
-@using ASP_NET_02._Dependency_injection.Models
+@using ASP_NET_03._Dependency_Injection___services.Models
 @model IndexModel
 @{
     ViewData["Title"] = "Products";
@@ -12,7 +12,7 @@
     {
         <div>
             <ol>
-                @foreach(var product in products!)
+                @foreach (var product in products!)
                 {
                     <li>
                         <strong>@product.Name</strong> - <em>@product.Description</em>

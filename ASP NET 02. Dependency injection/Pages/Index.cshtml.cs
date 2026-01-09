@@ -1,5 +1,4 @@
 using ASP_NET_02._Dependency_injection.Data;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ASP_NET_02._Dependency_injection.Pages;
