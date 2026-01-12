@@ -1,5 +1,24 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Product
 @{
+    ViewData["Title"] = "Details";
 }
+<h1>Dteails</h1>
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(m=>m.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m=>m.Name)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(m => m.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.Price)
+        </dd>
+    </dl>
+</div>

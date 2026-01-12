@@ -37,6 +37,16 @@ namespace ASP_NET_04._Products_MVC.Controllers
             }
             return View(product);
         }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id is null) return NotFound();
+            var product = await _context
+                .Products
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (product is null) return NotFound();
+            return View(product);
+        }
     }
 }
 
