@@ -1,0 +1,105 @@
+﻿@model ASP_NET_05._Html_Helpers.Models.User
+@using ASP_NET_05._Html_Helpers.HtmlHelpers;
+@{
+    ViewData["Title"] = "Home Page";
+    var students = new List<string>
+    {
+        "Farid A.",
+        "Aziz",
+        "Elnur",
+        "Rasul",
+        "Elvira",
+        "Amil",
+        "Davut",
+        "Elmar",
+        "Farid S.",
+    };
+    var users = new List<User>
+{
+    new User { Id = 1,  Login = "Madura",    Password = "TrumpYaTebyaNeBoyus" },
+    new User { Id = 2,  Login = "Shadow",    Password = "NightWolf_91" },
+    new User { Id = 3,  Login = "Neo",       Password = "MatrixHasYou" },
+    new User { Id = 4,  Login = "Raven",     Password = "BlackSky#777" },
+    new User { Id = 5,  Login = "Phoenix",   Password = "FireReborn!" },
+    new User { Id = 6,  Login = "IronMan",   Password = "JarvisOnline" },
+    new User { Id = 7,  Login = "Samurai",   Password = "KatanaWay" },
+    new User { Id = 8,  Login = "Viper",     Password = "SnakeEye99" },
+    new User { Id = 9,  Login = "Ghost",     Password = "SilentStep" },
+    new User { Id = 10, Login = "Titan",     Password = "AtlasStrong" },
+    new User { Id = 11, Login = "Falcon",    Password = "SkyHunter" },
+    new User { Id = 12, Login = "Wizard",    Password = "MagicCode42" },
+    new User { Id = 13, Login = "Hunter",    Password = "TargetLocked" },
+    new User { Id = 14, Login = "Storm",     Password = "ThunderRolls" },
+    new User { Id = 15, Login = "Nomad",     Password = "NoHomeButFree" }
+};
+    var random = new Random();
+}
+
+<div class="text-center">
+    @* <form method="get" action="/Home/Privacy">
+        <input type="hidden" value="@random.Next(1, 100)" name="Id" />
+        <p>
+            <label for="Login">Login</label>
+        </p>
+        <p>
+            <input type="text" name="Login"/>
+        </p>
+        <p>
+            <label for="Password">Password</label>
+        </p>
+        <p>
+            <input type="password" name="Password" />
+        </p>
+        <p>
+            <input type="submit" name="Send" />
+        </p>
+
+    </form> *@
+
+    @* @using(Html.BeginForm("Privacy", "Home", FormMethod.Get))
+    {
+        @Html.Hidden("Id", random.Next(1, 100))
+        <p>
+            @Html.LabelFor(m=> m.Login)
+        </p>
+        <p>
+            @Html.TextBox("Login")
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Password)
+        </p>
+        <p>
+            @Html.Password("Password")
+        </p>
+        <p>
+            <input type="submit" name="Send" />
+        </p>
+        <p>
+            @Html.DropDownList("Students", new SelectList(students))
+        </p>
+        <p>
+            @Html.Label("C++")
+            @Html.RadioButton("Languge", "C++")
+            <br />
+            @Html.Label("Pyrhon")
+            @Html.RadioButton("Languge", "Python")
+            <br />
+            @Html.Label("C#")
+            @Html.RadioButton("Languge", "C#")
+        </p>
+    } *@
+
+   @*  <ol style="color: red; font-size:25px;">
+        @foreach(var student in students){
+            <li>@student</li>
+        }
+    </ol> *@
+    @* @Html.ListFor(
+        students, 
+        color:"Blue", 
+        listTag:"ol")
+    @Html.ListFor(
+            users); *@
+
+            @Html.myForm(controller:"Home", action:"Privacy", buttonText:"Log In", method:"post")
+</div>
