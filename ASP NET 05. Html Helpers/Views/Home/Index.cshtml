@@ -89,7 +89,7 @@
         </p>
     } *@
 
-   @*  <ol style="color: red; font-size:25px;">
+    @*  <ol style="color: red; font-size:25px;">
         @foreach(var student in students){
             <li>@student</li>
         }
@@ -101,5 +101,9 @@
     @Html.ListFor(
             users); *@
 
-            @Html.myForm(controller:"Home", action:"Privacy", buttonText:"Log In", method:"post")
+    @Html.myForm(
+        controller: "Home", 
+        action: "Privacy", 
+        buttonText: "Log In", 
+        method: "post")
 </div>

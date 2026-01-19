@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 18
-VisualStudioVersion = 18.1.11312.151
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 01. Web App example", "ASP NET 01. Web App example\ASP NET 01. Web App example.csproj", "{434647D4-0E98-4AA8-9E43-E205D31804FA}"
 EndProject
@@ -44,6 +44,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ASP NET 06", "ASP NET 06", "{BE2A129D-8313-41E2-AFD7-382E26F5FF62}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 06. Pagination Filtering Sorting", "ASP NET 06. Pagination, Filtering, Sorting\ASP NET 06. Pagination Filtering Sorting.csproj", "{780BB99D-F97E-461E-A5F1-FEA45BFE7029}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ASP NET 07", "ASP NET 07", "{9C0D771D-54BF-41C2-9DC5-1056366B9B06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 07. TaskFlow Introduction", "ASP NET 07. TaskFlow Introduction\ASP NET 07. TaskFlow Introduction.csproj", "{370059E9-5F11-4523-B6C1-2CC7E310B113}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +115,10 @@ Global
 		{780BB99D-F97E-461E-A5F1-FEA45BFE7029}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{780BB99D-F97E-461E-A5F1-FEA45BFE7029}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{780BB99D-F97E-461E-A5F1-FEA45BFE7029}.Release|Any CPU.Build.0 = Release|Any CPU
+		{370059E9-5F11-4523-B6C1-2CC7E310B113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{370059E9-5F11-4523-B6C1-2CC7E310B113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{370059E9-5F11-4523-B6C1-2CC7E310B113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{370059E9-5F11-4523-B6C1-2CC7E310B113}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,6 +139,7 @@ Global
 		{9787EC99-D876-4CAC-B9F2-0E7AF0811E84} = {9B836110-FDC6-49EB-94AD-119836734089}
 		{173CE213-2E05-47E3-91F1-845266CCE37E} = {9B836110-FDC6-49EB-94AD-119836734089}
 		{780BB99D-F97E-461E-A5F1-FEA45BFE7029} = {BE2A129D-8313-41E2-AFD7-382E26F5FF62}
+		{370059E9-5F11-4523-B6C1-2CC7E310B113} = {9C0D771D-54BF-41C2-9DC5-1056366B9B06}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E4870BAB-DD25-4E3B-9ABC-EE53B6A30681}
