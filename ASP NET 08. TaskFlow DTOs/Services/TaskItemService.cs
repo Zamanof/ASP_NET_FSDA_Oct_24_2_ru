@@ -1,9 +1,9 @@
-﻿using ASP_NET_07._TaskFlow_Introduction.Data;
-using ASP_NET_07._TaskFlow_Introduction.Models;
-using ASP_NET_07._TaskFlow_Introduction.Services.Interfaces;
+﻿using ASP_NET_08._TaskFlow_DTOs.Data;
+using ASP_NET_08._TaskFlow_DTOs.Models;
+using ASP_NET_08._TaskFlow_DTOs.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace ASP_NET_07._TaskFlow_Introduction.Services;
+namespace ASP_NET_08._TaskFlow_DTOs.Services;
 
 public class TaskItemService : ITaskItemService
 {

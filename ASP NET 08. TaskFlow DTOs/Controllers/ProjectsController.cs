@@ -1,8 +1,9 @@
-﻿using ASP_NET_07._TaskFlow_Introduction.Models;
-using ASP_NET_07._TaskFlow_Introduction.Services.Interfaces;
+﻿using ASP_NET_08._TaskFlow_DTOs.DTOs;
+using ASP_NET_08._TaskFlow_DTOs.Models;
+using ASP_NET_08._TaskFlow_DTOs.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ASP_NET_07._TaskFlow_Introduction.Controllers;
+namespace ASP_NET_08._TaskFlow_DTOs.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -16,14 +17,14 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Project>>> GetAll()
+    public async Task<ActionResult<IEnumerable<ProjectResponseDto>>> GetAll()
     {
         var projects = await _projectService.GetAllAsync();
         return Ok(projects);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Project>> GetById(int id)
+    public async Task<ActionResult<ProjectResponseDto>> GetById(int id)
     {
         var project = await _projectService.GetByIdAsync(id);
         if (project is null) 
@@ -32,10 +33,10 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Project>> Create([FromBody] Project project)
+    public async Task<ActionResult<ProjectResponseDto>> Create([FromBody] CreateProjectDto createProjectDto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var createdProject = await _projectService.CreateAsync(project);
+        var createdProject = await _projectService.CreateAsync(createProjectDto);
         return CreatedAtAction(
             nameof(GetById),
             new { id = createdProject.Id }, 
@@ -43,11 +44,11 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Project>> Update(int id, [FromBody] Project project)
+    public async Task<ActionResult<ProjectResponseDto>> Update(int id, [FromBody] UpdateProjectDto updateProjectDto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var updatedProject = await _projectService.UpdateAsync(id, project);
+        var updatedProject = await _projectService.UpdateAsync(id, updateProjectDto);
 
         if(updatedProject is null) return NotFound($"Project with ID {id} not found");
 

@@ -1,6 +1,6 @@
-﻿using ASP_NET_07._TaskFlow_Introduction.Models;
+﻿using ASP_NET_08._TaskFlow_DTOs.Models;
 
-namespace ASP_NET_07._TaskFlow_Introduction.Services.Interfaces;
+namespace ASP_NET_08._TaskFlow_DTOs.Services.Interfaces;
 
 public interface ITaskItemService
 {

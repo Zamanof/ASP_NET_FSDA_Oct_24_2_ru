@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ASP_NET_07._TaskFlow_Introduction.Models;
+namespace ASP_NET_08._TaskFlow_DTOs.Models;
 
 public class TaskItem
 {

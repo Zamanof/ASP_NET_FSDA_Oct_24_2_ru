@@ -1,9 +1,9 @@
-﻿using ASP_NET_07._TaskFlow_Introduction.Models;
-using ASP_NET_07._TaskFlow_Introduction.Services;
-using ASP_NET_07._TaskFlow_Introduction.Services.Interfaces;
+﻿using ASP_NET_08._TaskFlow_DTOs.Models;
+using ASP_NET_08._TaskFlow_DTOs.Services;
+using ASP_NET_08._TaskFlow_DTOs.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ASP_NET_07._TaskFlow_Introduction.Controllers;
+namespace ASP_NET_08._TaskFlow_DTOs.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
