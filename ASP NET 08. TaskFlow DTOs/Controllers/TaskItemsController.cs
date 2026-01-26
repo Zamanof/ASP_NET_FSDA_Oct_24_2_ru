@@ -1,4 +1,5 @@
-﻿using ASP_NET_08._TaskFlow_DTOs.Models;
+﻿using ASP_NET_08._TaskFlow_DTOs.DTOs.TaskItem_DTOs;
+using ASP_NET_08._TaskFlow_DTOs.Models;
 using ASP_NET_08._TaskFlow_DTOs.Services;
 using ASP_NET_08._TaskFlow_DTOs.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -17,14 +18,14 @@ public class TaskItemsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TaskItem>>> GetAll()
+    public async Task<ActionResult<IEnumerable<TaskItemResponseDto>>> GetAll()
     {
         var tasks = await _taskItemService.GetAllAsync();
         return Ok(tasks);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<TaskItem>> GetById(int id)
+    public async Task<ActionResult<TaskItemResponseDto>> GetById(int id)
     {
         var task = await _taskItemService.GetByIdAsync(id);
         if (task is null) return NotFound($"Task with ID {id} not found");
@@ -32,20 +33,20 @@ public class TaskItemsController : ControllerBase
     }
 
     [HttpGet("project/{projectId}")]
-    public async Task<ActionResult<IEnumerable<TaskItem>>> GetByProjectId(int projectId)
+    public async Task<ActionResult<IEnumerable<TaskItemResponseDto>>> GetByProjectId(int projectId)
     {
         var tasks = await _taskItemService.GetByProjectIdAsync(projectId);
         return Ok(tasks);
     }
 
     [HttpPost]
-    public async Task<ActionResult<TaskItem>> Create([FromBody] TaskItem taskItem)
+    public async Task<ActionResult<TaskItemResponseDto>> Create([FromBody] CreateTaskItemDto createTask)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
         try
         {
-            var task = await _taskItemService.CreateAsync(taskItem);
+            var task = await _taskItemService.CreateAsync(createTask);
             return CreatedAtAction(nameof(GetById), new { id = task.Id }, task);
         }
         catch (ArgumentException ex)
@@ -56,11 +57,11 @@ public class TaskItemsController : ControllerBase
 
     [HttpPut("{id}")]
 
-    public async Task<ActionResult<TaskItem>> Update(int id, [FromBody] TaskItem taskItem)
+    public async Task<ActionResult<TaskItemResponseDto>> Update(int id, [FromBody] UpdateTaskItemDto updateTask)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var task = await _taskItemService.UpdateAsync(id, taskItem);
+        var task = await _taskItemService.UpdateAsync(id, updateTask);
 
         if (task is null) return NotFound($"Task with ID {id} not found");
 
