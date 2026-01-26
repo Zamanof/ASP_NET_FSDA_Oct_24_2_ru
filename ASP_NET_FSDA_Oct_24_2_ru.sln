@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11408.102 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 01. Web App example", "ASP NET 01. Web App example\ASP NET 01. Web App example.csproj", "{434647D4-0E98-4AA8-9E43-E205D31804FA}"
 EndProject
@@ -50,6 +50,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 07. TaskFlow Introduction", "ASP NET 07. TaskFlow Introduction\ASP NET 07. TaskFlow Introduction.csproj", "{370059E9-5F11-4523-B6C1-2CC7E310B113}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 08. TaskFlow DTOs", "ASP NET 08. TaskFlow DTOs\ASP NET 08. TaskFlow DTOs.csproj", "{162262D4-6C29-4BAC-B1E6-3FF9530A93EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ASP NET 08", "ASP NET 08", "{55978F79-0481-420C-9058-5E835209C403}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -146,6 +148,7 @@ Global
 		{173CE213-2E05-47E3-91F1-845266CCE37E} = {9B836110-FDC6-49EB-94AD-119836734089}
 		{780BB99D-F97E-461E-A5F1-FEA45BFE7029} = {BE2A129D-8313-41E2-AFD7-382E26F5FF62}
 		{370059E9-5F11-4523-B6C1-2CC7E310B113} = {9C0D771D-54BF-41C2-9DC5-1056366B9B06}
+		{162262D4-6C29-4BAC-B1E6-3FF9530A93EB} = {55978F79-0481-420C-9058-5E835209C403}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E4870BAB-DD25-4E3B-9ABC-EE53B6A30681}
