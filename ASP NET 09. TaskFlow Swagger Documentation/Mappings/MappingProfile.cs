@@ -1,8 +1,8 @@
-﻿namespace ASP_NET_09._TaskFlow_AutoMapper.Mappings;
+﻿namespace ASP_NET_09._TaskFlow_Swagger_Documentation.Mappings;
 
-using ASP_NET_09._TaskFlow_AutoMapper.DTOs;
-using ASP_NET_09._TaskFlow_AutoMapper.DTOs.TaskItem_DTOs;
-using ASP_NET_09._TaskFlow_AutoMapper.Models;
+using ASP_NET_09._TaskFlow_Swagger_Documentation.DTOs;
+using ASP_NET_09._TaskFlow_Swagger_Documentation.DTOs.TaskItem_DTOs;
+using ASP_NET_09._TaskFlow_Swagger_Documentation.Models;
 using AutoMapper;
 
 public class MappingProfile : Profile
@@ -40,7 +40,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.Project, opt => opt.Ignore());
 
-        CreateMap<UpdateProjectDto, TaskItem>()
+        CreateMap<CreateTaskItemDto, TaskItem>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
