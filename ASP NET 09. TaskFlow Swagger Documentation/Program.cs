@@ -35,7 +35,7 @@ builder.Services.AddSwaggerGen(
         var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
         if (File.Exists(xmlPath)) options.IncludeXmlComments(xmlPath);
 
-        options.SchemaFilter<SwaggerExampleSchemaFilter>();
+        //options.SchemaFilter<SwaggerExampleSchemaFilter>();
     }
     );
 

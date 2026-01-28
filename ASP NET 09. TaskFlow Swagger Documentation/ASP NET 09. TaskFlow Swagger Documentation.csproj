@@ -6,6 +6,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RootNamespace>ASP_NET_09._TaskFlow_Swagger_Documentation</RootNamespace>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
