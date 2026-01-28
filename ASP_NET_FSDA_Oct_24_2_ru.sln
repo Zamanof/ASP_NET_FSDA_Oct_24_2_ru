@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 18
-VisualStudioVersion = 18.2.11408.102 d18.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 01. Web App example", "ASP NET 01. Web App example\ASP NET 01. Web App example.csproj", "{434647D4-0E98-4AA8-9E43-E205D31804FA}"
 EndProject
@@ -58,6 +58,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 09. TaskFlow AutoMapper", "ASP NET 09. TaskFlow AutoMapper\ASP NET 09. TaskFlow AutoMapper.csproj", "{2FCB947D-1942-4E01-ADB8-7E467554E5F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 09. TaskFlow Swagger Documentation", "ASP NET 09. TaskFlow Swagger Documentation\ASP NET 09. TaskFlow Swagger Documentation.csproj", "{AC3B653C-1405-4A9A-B7AB-1DBE7E93E255}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ASP NET 10", "ASP NET 10", "{A90D44E8-C9F4-4C04-9865-29E3C77D33B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 10. TaskFlow Pagination Ordering Filtering", "ASP NET 10. TaskFlow Pagination Ordering Filtering\ASP NET 10. TaskFlow Pagination Ordering Filtering.csproj", "{51E3EC52-FE17-4D33-9C34-4C822F4E6653}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,6 +145,10 @@ Global
 		{AC3B653C-1405-4A9A-B7AB-1DBE7E93E255}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC3B653C-1405-4A9A-B7AB-1DBE7E93E255}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC3B653C-1405-4A9A-B7AB-1DBE7E93E255}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51E3EC52-FE17-4D33-9C34-4C822F4E6653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51E3EC52-FE17-4D33-9C34-4C822F4E6653}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51E3EC52-FE17-4D33-9C34-4C822F4E6653}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51E3EC52-FE17-4D33-9C34-4C822F4E6653}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -165,6 +173,7 @@ Global
 		{162262D4-6C29-4BAC-B1E6-3FF9530A93EB} = {55978F79-0481-420C-9058-5E835209C403}
 		{2FCB947D-1942-4E01-ADB8-7E467554E5F5} = {10FBC3AD-9B92-416E-818D-756138BCEC7E}
 		{AC3B653C-1405-4A9A-B7AB-1DBE7E93E255} = {10FBC3AD-9B92-416E-818D-756138BCEC7E}
+		{51E3EC52-FE17-4D33-9C34-4C822F4E6653} = {A90D44E8-C9F4-4C04-9865-29E3C77D33B3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E4870BAB-DD25-4E3B-9ABC-EE53B6A30681}
