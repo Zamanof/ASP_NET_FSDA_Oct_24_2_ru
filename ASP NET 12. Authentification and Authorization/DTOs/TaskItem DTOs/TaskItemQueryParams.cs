@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ASP_NET_11._TaskFlow_Validation_Global_exception_handler.DTOs.TaskItem_DTOs;
+namespace ASP_NET_12._Authentification_and_Authorization.DTOs.TaskItem_DTOs;
 
 public class TaskItemQueryParams
 {
