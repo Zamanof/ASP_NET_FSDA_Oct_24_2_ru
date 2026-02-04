@@ -53,6 +53,7 @@ public class ProjectsController : ControllerBase
     /// <response code="201">Returns the newly created project.</response>
     /// <response code="400">If the model is invalid.</response>
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<ApiResponse<ProjectResponseDto>>> Create([FromBody] CreateProjectDto createProjectDto)
     {
         //throw new KeyNotFoundException();
