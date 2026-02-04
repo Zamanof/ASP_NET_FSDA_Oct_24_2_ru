@@ -23,6 +23,7 @@ public class ProjectsController : ControllerBase
     /// <returns>List of all projects.</returns>
     /// <response code="200">Returns the list of projects successfully.</response>
     [HttpGet]
+    [Authorize(Policy ="UserOrAbove")]
     public async Task<ActionResult<ApiResponse<IEnumerable<ProjectResponseDto>>>> GetAll()
     {
         var projects = await _projectService.GetAllAsync();
@@ -37,6 +38,7 @@ public class ProjectsController : ControllerBase
     /// <response code="200">Returns the project if found.</response>
     /// <response code="404">If the project is not found.</response>
     [HttpGet("{id}")]
+    [Authorize(Policy = "UserOrAbove")]
     public async Task<ActionResult<ApiResponse<ProjectResponseDto>>> GetById(int id)
     {
         var project = await _projectService.GetByIdAsync(id);
@@ -53,7 +55,7 @@ public class ProjectsController : ControllerBase
     /// <response code="201">Returns the newly created project.</response>
     /// <response code="400">If the model is invalid.</response>
     [HttpPost]
-    [Authorize]
+    [Authorize (Policy = "ManagerOrAdmin")]
     public async Task<ActionResult<ApiResponse<ProjectResponseDto>>> Create([FromBody] CreateProjectDto createProjectDto)
     {
         //throw new KeyNotFoundException();
@@ -78,6 +80,7 @@ public class ProjectsController : ControllerBase
     /// <response code="400">If the model is invalid.</response>
     /// <response code="404">If the project is not found.</response>
     [HttpPut("{id}")]
+    [Authorize(Policy = "ManagerOrAdmin")]
     public async Task<ActionResult<ApiResponse<ProjectResponseDto>>> Update(int id, [FromBody] UpdateProjectDto updateProjectDto)
     {
         if (!ModelState.IsValid)
@@ -99,6 +102,7 @@ public class ProjectsController : ControllerBase
     /// <response code="204">Project deleted successfully.</response>
     /// <response code="404">If the project is not found.</response>
     [HttpDelete("{id}")]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<ActionResult<ApiResponse<object>>> Delete(int id)
     {
         var isDeleted = await _projectService.DeleteAsync(id);

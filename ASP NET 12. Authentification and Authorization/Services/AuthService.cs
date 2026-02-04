@@ -68,6 +68,9 @@ public class AuthService : IAuthService
             throw new InvalidOperationException($"User creation failed: {errors}");
         }
 
+        // Admin, Manager, User
+        await _userManager.AddToRoleAsync(user, "User");
+
         return await GenerateTokenAsync(user);
     }
 

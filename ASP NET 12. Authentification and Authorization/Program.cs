@@ -140,7 +140,15 @@ builder.Services.AddAuthentication(
     );
 
 // Authorization Policies
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(
+    options => { 
+        options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+        
+        options.AddPolicy("ManagerOrAdmin", policy => policy.RequireRole("Admin", "Manager"));
+        
+        options.AddPolicy("UserOrAbove", policy => policy.RequireRole("Admin", "Manager", "User")); 
+    }
+    );
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
@@ -176,4 +184,19 @@ app.UseAuthorization();
 app.MapControllers();
 
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        await RoleSeeder.SeedRolesAsync(services);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occured while seeding role");
+    }
+}
 app.Run();
