@@ -1,10 +1,10 @@
-﻿using ASP_NET_12._Authentification_and_Authorization.Common;
-using ASP_NET_12._Authentification_and_Authorization.DTOs;
-using ASP_NET_12._Authentification_and_Authorization.Services.Interfaces;
+﻿using ASP_NET_14._TaskFlow_Refresh_Token.Common;
+using ASP_NET_14._TaskFlow_Refresh_Token.DTOs;
+using ASP_NET_14._TaskFlow_Refresh_Token.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ASP_NET_12._Authentification_and_Authorization.Controllers;
+namespace ASP_NET_14._TaskFlow_Refresh_Token.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

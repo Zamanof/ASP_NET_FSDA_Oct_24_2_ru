@@ -1,0 +1,28 @@
+﻿using ASP_NET_14._TaskFlow_Refresh_Token.DTOs.TaskItem_DTOs;
+using ASP_NET_14._TaskFlow_Refresh_Token.Models;
+using FluentValidation;
+using TaskStatus = ASP_NET_14._TaskFlow_Refresh_Token.Models.TaskStatus;
+
+namespace ASP_NET_14._TaskFlow_Refresh_Token.Validators;
+
+public class UpdateTaskItemValidator : AbstractValidator<UpdateTaskItemDto>
+{
+    public UpdateTaskItemValidator()
+    {
+        RuleFor(x => x.Title)
+                .NotEmpty().WithMessage("TaskItem Title is required")
+                    .MinimumLength(3).WithMessage("TaskItem Title must be at least 3 characters long");
+
+        
+
+        RuleFor(x => x.Priority)
+            .NotEmpty().WithMessage("Priority is required")
+            .Must(p => new[] { TaskPriority.Low, TaskPriority.Medium, TaskPriority.High }.Contains(p))
+            .WithMessage("Priority must be one of: 0(Low), 1(Medium), 2(High)");
+
+        RuleFor(x => x.Status)
+            .NotEmpty().WithMessage("Status is required")
+            .Must(s => new[] { TaskStatus.ToDo, TaskStatus.InProgress, TaskStatus.Done }.Contains(s))
+            .WithMessage("Status must be one of: 0(ToDo), 1(InProgress), 2(Done)");
+    }
+}

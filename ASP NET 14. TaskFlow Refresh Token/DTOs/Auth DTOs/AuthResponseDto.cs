@@ -1,0 +1,12 @@
+﻿namespace ASP_NET_14._TaskFlow_Refresh_Token.DTOs.Auth_DTOs;
+
+public class AuthResponseDto
+{
+    public string Email { get; set; } = string.Empty;
+    public string AccessToken { get; set; } = string.Empty;
+    public DateTime ExpiresAt { get; set; }
+    public string RefreshToken { get; set; } = string.Empty;
+    public DateTime RefreshTokenExpiresAt { get; set; }
+
+    public IEnumerable<string> Roles { get; set; } = new List<string>();
+}
