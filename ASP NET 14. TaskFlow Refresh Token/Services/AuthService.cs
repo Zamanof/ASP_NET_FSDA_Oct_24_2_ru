@@ -3,6 +3,7 @@ using ASP_NET_14._TaskFlow_Refresh_Token.DTOs.Auth_DTOs;
 using ASP_NET_14._TaskFlow_Refresh_Token.Models;
 using ASP_NET_14._TaskFlow_Refresh_Token.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -20,8 +21,8 @@ public class AuthService : IAuthService
     private const string RefreshTokenType = "refresh";
 
     public AuthService(
-            UserManager<ApplicationUser> userManager, 
-            IConfiguration configuration, 
+            UserManager<ApplicationUser> userManager,
+            IConfiguration configuration,
             TaskFlowDbContext context)
     {
         _userManager = userManager;
@@ -83,13 +84,54 @@ public class AuthService : IAuthService
         return await GenerateTokenAsync(user);
     }
 
-    public Task<AuthResponseDto> RefreshTokenAsync(RefreshTokenRequestDto refreshTokenRequest)
+    public async Task<AuthResponseDto> RefreshTokenAsync(RefreshTokenRequestDto refreshTokenRequest)
     {
-        throw new NotImplementedException();
+        var (principal, jti) = ValidateRefreshJwtAndGetJti(refreshTokenRequest.RefreshToken);
+
+        var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.JwtId == jti);
+
+        if (storedToken is null)
+            throw new UnauthorizedAccessException("Invalid refresh token");
+
+        if(!storedToken.IsActive)
+            throw new UnauthorizedAccessException("Refresh token has been revoked or expired");
+
+        var userId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var user = await _userManager.FindByIdAsync(userId!);
+
+        if(user is null)
+            throw new UnauthorizedAccessException("User not found");
+
+        storedToken.RevokedAt = DateTime.UtcNow;
+
+        var newToken = await GenerateTokenAsync(user);
+        var newStored = await _context.RefreshTokens
+            .FirstOrDefaultAsync(rt => rt.JwtId == GetJtiFromRefreshToken(newToken.RefreshToken));
+
+        if (newStored is not null) storedToken.ReplacedByJwtId = newStored.JwtId;
+
+        await _context.SaveChangesAsync();
+        return newToken;
+
     }
-    public Task RevokeRefreshTokenAsync(RefreshTokenRequestDto refreshTokenRequest)
+    public async Task RevokeRefreshTokenAsync(string refreshToken)
     {
-        throw new NotImplementedException();
+        string? jti;
+        try
+        {
+            (_, jti) = ValidateRefreshJwtAndGetJti(refreshToken, validateLifeTime: false);
+        }
+        catch
+        {
+            return;
+        }
+        var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.JwtId == jti);
+        
+        if (storedToken is null || !storedToken.IsActive) return;
+
+        storedToken.RevokedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
     }
 
     private async Task<AuthResponseDto> GenerateTokenAsync(ApplicationUser user)
@@ -99,6 +141,7 @@ public class AuthService : IAuthService
         var issuer = jwtSettings["Issuer"];
         var audience = jwtSettings["Audience"];
         var expirationMinutes = int.Parse(jwtSettings["ExpirationInMinutes"]!);
+        var refreshTokenExpirationDays = int.Parse(jwtSettings["RefreshTokenExpirationInDays"]!);
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -123,16 +166,20 @@ public class AuthService : IAuthService
             audience: audience,
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(expirationMinutes),
-            signingCredentials: credentials            
+            signingCredentials: credentials
             );
 
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+        var (refreshToken, jwt) = await CreateRefreshTokenJwtAsync(user.Id, refreshTokenExpirationDays);
 
         return new AuthResponseDto
         {
             Email = user.Email!,
             AccessToken = tokenString,
             ExpiresAt = DateTime.UtcNow.AddMinutes(expirationMinutes),
+            RefreshToken = jwt,
+            RefreshTokenExpiresAt = refreshToken.ExpiresAt,
             Roles = roles
         };
 
@@ -163,7 +210,7 @@ public class AuthService : IAuthService
             issuer: issuer,
             audience: audience,
             claims: claims,
-            expires:expiresAt,
+            expires: expiresAt,
             signingCredentials: credentials
             );
 
@@ -184,9 +231,51 @@ public class AuthService : IAuthService
 
     }
 
-    private (ClaimsPrincipal principal, string jti) ValidateRefreshJwtAndGetJti(string refreshToken, bool validateLifeTime = true)
+    private (ClaimsPrincipal principal, string jti)
+        ValidateRefreshJwtAndGetJti(string refreshToken, bool validateLifeTime = true)
     {
+        var jwtSettings = _configuration.GetSection("JWTSettings");
+        var refreshSecretKey = jwtSettings["RefreshTokenSecretKey"];
+        var issuer = jwtSettings["Issuer"];
+        var audience = jwtSettings["Audience"];
+
+        var handler = new JwtSecurityTokenHandler();
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(refreshSecretKey!));
+
+        var principal = handler.ValidateToken(refreshToken, new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = key,
+            ValidateIssuer = true,
+            ValidIssuer = issuer,
+            ValidateAudience = true,
+            ValidAudience = audience,
+            ValidateLifetime = validateLifeTime,
+            ClockSkew = TimeSpan.Zero
+        }, out var validatedToken);
+
+        if (validatedToken is not JwtSecurityToken jwt)
+            throw new UnauthorizedAccessException("Invalid refresh token");
+
+        var tokenType = jwt.Claims.FirstOrDefault(x => x.Type == "token_type")?.Value;
+
+        if (tokenType != RefreshTokenType)
+            throw new UnauthorizedAccessException("Invalid refresh token");
+
+        var jti = jwt.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value
+                        ?? throw new UnauthorizedAccessException("Invalid refresh token");
+
+        return (principal, jti);
+
 
     }
-    private static string GetJTiFromRefreshToken(string refreshJwt)
+    private static string GetJtiFromRefreshToken(string refreshJwt)
+    {
+        var handler = new JwtSecurityTokenHandler();
+
+        if (!handler.CanReadToken(refreshJwt)) return string.Empty;
+
+        var jwt = handler.ReadJwtToken(refreshJwt);
+        return jwt.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value ?? string.Empty;
+    }
 }

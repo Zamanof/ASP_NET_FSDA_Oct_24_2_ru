@@ -7,5 +7,5 @@ public interface IAuthService
     Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto);
     Task<AuthResponseDto> LoginAsync(LoginDto loginDto);
     Task<AuthResponseDto> RefreshTokenAsync(RefreshTokenRequestDto refreshTokenRequest);
-    Task RevokeRefreshTokenAsync(RefreshTokenRequestDto refreshTokenRequest);
+    Task RevokeRefreshTokenAsync(string refreshToken);
 }
