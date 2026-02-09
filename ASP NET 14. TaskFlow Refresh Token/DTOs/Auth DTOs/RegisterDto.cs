@@ -26,5 +26,5 @@ public class RegisterDto
     /// Confirmed Password
     /// </summary>
     /// <example>P@ss1234</example>
-    public string ConfirmedPassword { get; set; } = string.Empty;
+    public string ConfirmPassword { get; set; } = string.Empty;
 }

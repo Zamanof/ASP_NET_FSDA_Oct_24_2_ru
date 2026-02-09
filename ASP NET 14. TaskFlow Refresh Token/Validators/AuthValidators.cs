@@ -24,7 +24,7 @@ public class RegisterDtoValidator : AbstractValidator<RegisterDto>
             .MinimumLength(6).WithMessage("Passwords must be at least 6 characters.")
             .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)").WithMessage("Passwords must contain at least one uppercase, one lowercase, and one number.");
 
-        RuleFor(x => x.ConfirmedPassword)
+        RuleFor(x => x.ConfirmPassword)
             .NotEmpty().WithMessage("Password confirmation is required")
             .Equal(x => x.Password).WithMessage("Passwords do not match");
     }
