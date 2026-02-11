@@ -1,9 +1,9 @@
-﻿using ASP_NET_14._TaskFlow_Refresh_Token.DTOs.TaskItem_DTOs;
-using ASP_NET_14._TaskFlow_Refresh_Token.Models;
+﻿using ASP_16._TaskFlow_Ownership.DTOs.TaskItem_DTOs;
+using ASP_16._TaskFlow_Ownership.Models;
 using FluentValidation;
-using TaskStatus = ASP_NET_14._TaskFlow_Refresh_Token.Models.TaskStatus;
+using TaskStatus = ASP_16._TaskFlow_Ownership.Models.TaskStatus;
 
-namespace ASP_NET_14._TaskFlow_Refresh_Token.Validators;
+namespace ASP_16._TaskFlow_Ownership.Validators;
 
 public class UpdateTaskItemValidator : AbstractValidator<UpdateTaskItemDto>
 {

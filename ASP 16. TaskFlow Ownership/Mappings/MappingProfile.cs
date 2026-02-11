@@ -1,8 +1,8 @@
-﻿namespace ASP_NET_14._TaskFlow_Refresh_Token.Mappings;
+﻿namespace ASP_16._TaskFlow_Ownership.Mappings;
 
-using ASP_NET_14._TaskFlow_Refresh_Token.DTOs;
-using ASP_NET_14._TaskFlow_Refresh_Token.DTOs.TaskItem_DTOs;
-using ASP_NET_14._TaskFlow_Refresh_Token.Models;
+using ASP_16._TaskFlow_Ownership.DTOs;
+using ASP_16._TaskFlow_Ownership.DTOs.TaskItem_DTOs;
+using ASP_16._TaskFlow_Ownership.Models;
 using AutoMapper;
 
 public class MappingProfile : Profile
