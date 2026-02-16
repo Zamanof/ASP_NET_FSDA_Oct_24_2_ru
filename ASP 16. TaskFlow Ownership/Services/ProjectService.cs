@@ -88,7 +88,7 @@ public class ProjectService : IProjectService
         {}
         else if(roles.Contains("Manager"))
         {
-            query = query.Where(p => p.OwnerId == userId);
+            query = query.Where(p => p.OwnerId == userId || p.Members.Any(m => m.UserId == userId));
         }
         else
         {

@@ -3,19 +3,28 @@ using ASP_16._TaskFlow_Ownership.DTOs.TaskItem_DTOs;
 using ASP_16._TaskFlow_Ownership.Models;
 using ASP_16._TaskFlow_Ownership.Services;
 using ASP_16._TaskFlow_Ownership.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASP_16._TaskFlow_Ownership.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Policy ="UserOrAbove")]
 public class TaskItemsController : ControllerBase
 {
     private readonly ITaskItemService _taskItemService;
+    private readonly IProjectService _projectService;
+    private readonly IAuthorizationService _authorizationService;
 
-    public TaskItemsController(ITaskItemService taskItemService)
+    public TaskItemsController(
+        ITaskItemService taskItemService, 
+        IProjectService projectService, 
+        IAuthorizationService authorizationService)
     {
         _taskItemService = taskItemService;
+        _projectService = projectService;
+        _authorizationService = authorizationService;
     }
 
     /// <summary>
@@ -56,8 +65,20 @@ public class TaskItemsController : ControllerBase
     public async Task<ActionResult<ApiResponse<TaskItemResponseDto>>> GetById(int id)
     {
         var task = await _taskItemService.GetByIdAsync(id);
+        
         if (task is null)
             return NotFound(ApiResponse<TaskItemResponseDto>.ErrorResponse($"Task with ID {id} not found"));
+
+        var project = await _projectService.GetProjectEntityAsync(task.ProjectId);
+
+        if (project is null)
+            return NotFound();
+
+        var authResult = await _authorizationService.AuthorizeAsync(User, project, "ProjectMemberOrHigher");
+
+        if (!authResult.Succeeded)
+            return Forbid();
+
         return Ok(ApiResponse<TaskItemResponseDto>.SuccessResponse(task, "Task item found."));
     }
 
@@ -70,6 +91,16 @@ public class TaskItemsController : ControllerBase
     [HttpGet("project/{projectId}")]
     public async Task<ActionResult<ApiResponse<IEnumerable<TaskItemResponseDto>>>> GetByProjectId(int projectId)
     {
+        var project = await _projectService.GetProjectEntityAsync(projectId);
+
+        if (project is null)
+            return NotFound();
+
+        var authResult = await _authorizationService.AuthorizeAsync(User, project, "ProjectMemberOrHigher");
+
+        if (!authResult.Succeeded)
+            return Forbid();
+
         var tasks = await _taskItemService.GetByProjectIdAsync(projectId);
         return Ok(ApiResponse<IEnumerable<TaskItemResponseDto>>.SuccessResponse(tasks, "Returns the list of task items for the project."));
     }
@@ -87,7 +118,18 @@ public class TaskItemsController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ApiResponse<TaskItemResponseDto>.ErrorResponse("Invalid model state.", default));
 
+        var project = await _projectService.GetProjectEntityAsync(createTask.ProjectId);
+
+        if (project is null)
+            return NotFound();
+
+        var authResult = await _authorizationService.AuthorizeAsync(User, project, "ProjectOwnerOrAdmin");
+
+        if (!authResult.Succeeded)
+            return Forbid();
+
         var task = await _taskItemService.CreateAsync(createTask);
+
         return CreatedAtAction(nameof(GetById), new { id = task.Id }, ApiResponse<TaskItemResponseDto>.SuccessResponse(task, "Task item created successfully."));
 
         //try
@@ -115,13 +157,24 @@ public class TaskItemsController : ControllerBase
     {
         if (!ModelState.IsValid)
             return BadRequest(ApiResponse<TaskItemResponseDto>.ErrorResponse("Invalid model state.", default));
-
-        var task = await _taskItemService.UpdateAsync(id, updateTask);
+        var task = await _taskItemService.GetTaskEntityAsync(id);
 
         if (task is null)
             return NotFound(ApiResponse<TaskItemResponseDto>.ErrorResponse($"Task with ID {id} not found"));
 
-        return Ok(ApiResponse<TaskItemResponseDto>.SuccessResponse(task, "Task item updated successfully."));
+        var project = await _projectService.GetProjectEntityAsync(task.ProjectId);
+
+        if (project is null)
+            return NotFound();
+
+        var authResult = await _authorizationService.AuthorizeAsync(User, project, "ProjectOwnerOrAdmin");
+
+        if (!authResult.Succeeded)
+            return Forbid();
+
+        var updatedtask = await _taskItemService.UpdateAsync(id, updateTask);
+
+        return Ok(ApiResponse<TaskItemResponseDto>.SuccessResponse(updatedtask!, "Task item updated successfully."));
     }
 
     /// <summary>
@@ -132,13 +185,50 @@ public class TaskItemsController : ControllerBase
     /// <response code="200">Task item deleted successfully.</response>
     /// <response code="404">If the task item is not found.</response>
     [HttpDelete("{id}")]
-    public async Task<ActionResult<ApiResponse<object>>> Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
+        var task = await _taskItemService.GetTaskEntityAsync(id);
+
+        if (task is null)
+            return NotFound(ApiResponse<TaskItemResponseDto>.ErrorResponse($"Task with ID {id} not found"));
+
+        var project = await _projectService.GetProjectEntityAsync(task.ProjectId);
+
+        if (project is null)
+            return NotFound();
+
+        var authResult = await _authorizationService.AuthorizeAsync(User, project, "ProjectOwnerOrAdmin");
+
+        if (!authResult.Succeeded)
+            return Forbid();
+
         var isDeleted = await _taskItemService.DeleteAsync(id);
 
         if (!isDeleted)
             return NotFound(ApiResponse<object>.ErrorResponse($"Task with ID {id} not found"));
 
-        return Ok(ApiResponse<object>.SuccessResponse(null, "Task item deleted successfully."));
+        return NoContent();
+    }
+
+    [HttpPatch("{id}/status")]
+    public async Task<ActionResult<ApiResponse<TaskItemResponseDto>>> UpdateStatus(int id, [FromBody] TaskStatusUpdateDto taskStatusUpdate)
+    {
+        var task = await _taskItemService.GetTaskEntityAsync(id);
+
+        if (task is null)
+            return NotFound(ApiResponse<TaskItemResponseDto>.ErrorResponse($"Task with ID {id} not found"));
+
+        var authResult = await _authorizationService.AuthorizeAsync(User, task, "TaskStatusChange");
+
+        if (!authResult.Succeeded)
+            return Forbid();
+
+        var updated = await _taskItemService.UpdateStatusAsync(id, taskStatusUpdate);
+
+        if (updated is null)
+            return BadRequest();
+
+        return Ok(ApiResponse<TaskItemResponseDto>.SuccessResponse(updated, "Status updated"));
+
     }
 }

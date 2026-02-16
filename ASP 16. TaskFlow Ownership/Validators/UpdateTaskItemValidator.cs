@@ -11,9 +11,7 @@ public class UpdateTaskItemValidator : AbstractValidator<UpdateTaskItemDto>
     {
         RuleFor(x => x.Title)
                 .NotEmpty().WithMessage("TaskItem Title is required")
-                    .MinimumLength(3).WithMessage("TaskItem Title must be at least 3 characters long");
-
-        
+                    .MinimumLength(3).WithMessage("TaskItem Title must be at least 3 characters long");           
 
         RuleFor(x => x.Priority)           
             .Must(p => new[] { TaskPriority.Low, TaskPriority.Medium, TaskPriority.High }.Contains(p))
