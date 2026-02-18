@@ -1,12 +1,11 @@
-﻿using ASP_16._TaskFlow_Ownership.Common;
-using ASP_16._TaskFlow_Ownership.DTOs.TaskItem_DTOs;
-using ASP_16._TaskFlow_Ownership.Models;
-using ASP_16._TaskFlow_Ownership.Services;
-using ASP_16._TaskFlow_Ownership.Services.Interfaces;
+﻿using ASP_NET_19._TaskFlow_Refactored.Common;
+using ASP_NET_19._TaskFlow_Refactored.DTOs;
+using ASP_NET_19._TaskFlow_Refactored.Models;
+using ASP_NET_19._TaskFlow_Refactored.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ASP_16._TaskFlow_Ownership.Controllers;
+namespace ASP_NET_19._TaskFlow_Refactored.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
