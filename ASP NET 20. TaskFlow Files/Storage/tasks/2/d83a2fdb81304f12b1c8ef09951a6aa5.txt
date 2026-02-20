@@ -1,0 +1,2 @@
+Прочтите разницу про Role Based Authorization и Resource Based Authorization. Сделайте конспект и отправьте как ДЗ.
+На сдедующем уроке буду спрашивать.
