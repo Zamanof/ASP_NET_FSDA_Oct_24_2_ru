@@ -122,7 +122,7 @@ public class TaskAttachmentService: ITaskAttachmentService
 
         return true;
     }
-    public async Task<TaskAttachmentInfo?> GetAttachmentInfo(int attachmentId, CancellationToken cancellationToken = default)
+    public async Task<TaskAttachmentInfo?> GetAttachmentInfoAsync(int attachmentId, CancellationToken cancellationToken = default)
     {
         var att = await _context.TaskAttachments
                                 .Include(a=> a.TaskItem)

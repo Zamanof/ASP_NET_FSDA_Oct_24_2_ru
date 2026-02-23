@@ -39,21 +39,75 @@ public class AttachmentsController : ControllerBase
     {
         var task = await _taskItemService.GetTaskEntityAsync(taskId);
 
-        var project = await _projectService.GetProjectEntityAsync(task.ProjectId);
+        var project = await _projectService.GetProjectEntityAsync(task!.ProjectId);
 
         var authResult = await _authorizationService.AuthorizeAsync(User, project, "ProjectMemberOrHigher");
+
+        if (!authResult.Succeeded)
+            return Forbid();
 
         if (file is null || file.Length == 0)
             return BadRequest();
 
-        AttachmentResponseDto dto;
+        AttachmentResponseDto? dto;
 
         await using var stream = file.OpenReadStream();
+
         dto = await _taskAttachmentService.UploadAsync(taskId, stream, file.FileName, file.ContentType, file.Length, UserId, cancellationToken);
 
-        if (dto is null) return NotFound();
+        if (dto is null) 
+            return NotFound();
 
         return Ok(ApiResponse<AttachmentResponseDto>.SuccessResponse(dto, "File uplaoded"));
-
     }
+
+    [HttpGet("{id}/download")]
+    public async Task<IActionResult> Download(int id, CancellationToken cancellationToken)
+    {
+        var info = await _taskAttachmentService.GetAttachmentInfoAsync(id, cancellationToken);
+        
+        if (info is null)
+            return NotFound();
+
+        var project = await _projectService.GetProjectEntityAsync(info.ProjectId);
+
+        if (project is null)
+            return NotFound();
+
+        var authResult = await _authorizationService.AuthorizeAsync(User, project, "ProjectMemberOrHigher");
+        if (!authResult.Succeeded)
+            return Forbid();
+
+        var result = await _taskAttachmentService.GetDownloadAsync(id, cancellationToken);
+        if (result is null)
+            return NotFound();
+
+        return File(result.Value.stream,  result.Value.contentType, result.Value.fileName);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+    {
+        var info = await _taskAttachmentService.GetAttachmentInfoAsync(id, cancellationToken);
+
+        if (info is null)
+            return NotFound();
+
+        var project = await _projectService.GetProjectEntityAsync(info.ProjectId);
+
+        if (project is null)
+            return NotFound();
+
+        var authResult = await _authorizationService.AuthorizeAsync(User, project, "ProjectOwnerOrAdmin");
+        if (!authResult.Succeeded)
+            return Forbid();
+
+        var deleted = await _taskAttachmentService.DeleteAsync(id, cancellationToken);
+
+        if (!deleted)
+            return NotFound();
+
+        return NoContent();
+    }
+
 }

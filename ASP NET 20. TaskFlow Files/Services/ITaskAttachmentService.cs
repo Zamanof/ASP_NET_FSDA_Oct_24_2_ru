@@ -23,7 +23,7 @@ public interface ITaskAttachmentService
        CancellationToken cancellationToken = default
        );
 
-    Task<TaskAttachmentInfo?> GetAttachmentInfo(
+    Task<TaskAttachmentInfo?> GetAttachmentInfoAsync(
        int attachmentId,
        CancellationToken cancellationToken = default
        );
