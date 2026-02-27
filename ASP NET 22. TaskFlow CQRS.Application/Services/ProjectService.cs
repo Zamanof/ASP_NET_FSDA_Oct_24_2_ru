@@ -21,7 +21,6 @@ public class ProjectService : IProjectService
         _projectMemberRepository = projectMemberRepository;
         _userRepository = userRepository;
         _authUserStore = authUserStore;
-        _mapper = mapper;
     }
     public async Task<Project?> GetProjectEntityAsync(int id) =>
         await _projectRepository.GetByIdWithTasksAndMembersAsync(id);
