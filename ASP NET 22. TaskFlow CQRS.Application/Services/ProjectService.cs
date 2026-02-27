@@ -1,6 +1,5 @@
-using AutoMapper;
-using  ASP_NET_22._TaskFlow_CQRS.Application.DTOs;
-using  ASP_NET_22._TaskFlow_CQRS.Application.Interfaces;
+using ASP_NET_22._TaskFlow_CQRS.Application.DTOs;
+using ASP_NET_22._TaskFlow_CQRS.Application.Interfaces;
 using ASP_NET_22._TaskFlow_CQRS.Domain;
 
 namespace  ASP_NET_22._TaskFlow_CQRS.Application.Services;
@@ -11,14 +10,12 @@ public class ProjectService : IProjectService
     private readonly IProjectMemberRepository _projectMemberRepository;
     private readonly IUserRepository _userRepository;
     private readonly IAuthUserStore _authUserStore;
-    private readonly IMapper _mapper;
 
     public ProjectService(
         IProjectRepository projectRepository,
         IProjectMemberRepository projectMemberRepository,
         IUserRepository userRepository,
-        IAuthUserStore authUserStore,
-        IMapper mapper)
+        IAuthUserStore authUserStore)
     {
         _projectRepository = projectRepository;
         _projectMemberRepository = projectMemberRepository;
@@ -26,47 +23,8 @@ public class ProjectService : IProjectService
         _authUserStore = authUserStore;
         _mapper = mapper;
     }
-
-    public async Task<IEnumerable<ProjectResponseDto>> GetAllForUserAsync(string userId, IList<string> roles)
-    {
-        var projects = await _projectRepository.GetAllForUserAsync(userId, roles);
-        return _mapper.Map<IEnumerable<ProjectResponseDto>>(projects);
-    }
-
     public async Task<Project?> GetProjectEntityAsync(int id) =>
         await _projectRepository.GetByIdWithTasksAndMembersAsync(id);
-
-    public async Task<ProjectResponseDto?> GetByIdAsync(int id)
-    {
-        var project = await _projectRepository.GetByIdWithTasksAsync(id);
-        return project is null ? null : _mapper.Map<ProjectResponseDto>(project);
-    }
-
-    public async Task<ProjectResponseDto> CreateAsync(CreateProjectDto createProjectDto, string ownerId)
-    {
-        var project = _mapper.Map<Project>(createProjectDto);
-        project.OwnerId = ownerId;
-        await _projectRepository.AddAsync(project);
-        return _mapper.Map<ProjectResponseDto>(project);
-    }
-
-    public async Task<ProjectResponseDto?> UpdateAsync(int id, UpdateProjectDto updateProjectDto)
-    {
-        var project = await _projectRepository.GetByIdWithTasksAsync(id);
-        if (project is null) return null;
-        _mapper.Map(updateProjectDto, project);
-        await _projectRepository.UpdateAsync(project);
-        return _mapper.Map<ProjectResponseDto>(project);
-    }
-
-    public async Task<bool> DeleteAsync(int id)
-    {
-        var project = await _projectRepository.FindAsync(id);
-        if (project is null) return false;
-        await _projectRepository.RemoveAsync(project);
-        return true;
-    }
-
     public async Task<IEnumerable<ProjectMemberResponse>> GetMembersAsync(int projectId) =>
         await _projectMemberRepository.GetByProjectIdWithUserAsync(projectId);
 

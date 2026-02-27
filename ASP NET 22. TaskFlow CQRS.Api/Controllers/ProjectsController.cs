@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using ASP_NET_22._TaskFlow_CQRS.Application.Common;
 using ASP_NET_22._TaskFlow_CQRS.Application.DTOs;
 using ASP_NET_22._TaskFlow_CQRS.Application.Services;
+using MediatR;
+using ASP_NET_22._TaskFlow_CQRS.Application.Queries.Projects;
+using ASP_NET_22._TaskFlow_CQRS.Application.Commands.Projects;
 
 namespace ASP_NET_22._TaskFlow_CQRS.Api.Controllers;
 
@@ -14,14 +17,16 @@ public class ProjectsController : ControllerBase
 {
     private readonly IProjectService _projectService;
     private readonly IAuthorizationService _authorizationService;
+    private readonly IMediator _mediator;
 
     private string? UserId => User.FindFirstValue(ClaimTypes.NameIdentifier);
     private IList<string> UserRoles => User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
 
-    public ProjectsController(IProjectService projectService, IAuthorizationService authorizationService)
+    public ProjectsController(IProjectService projectService, IAuthorizationService authorizationService, IMediator mediator)
     {
         _projectService = projectService;
         _authorizationService = authorizationService;
+        _mediator = mediator;
     }
 
     [HttpPost]
@@ -30,7 +35,7 @@ public class ProjectsController : ControllerBase
     {
         var ownerId = UserId ?? throw new InvalidOperationException("User ID not found in claims");
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        var createdProject = await _projectService.CreateAsync(createProjectDto, ownerId);
+        var createdProject = await _mediator.Send(new CreateProjectCommand(createProjectDto, ownerId));
         return CreatedAtAction(nameof(GetById), new { id = createdProject.Id },
             ApiResponse<ProjectResponseDto>.SuccessResponse(createdProject, "Project created successfully"));
     }
@@ -42,7 +47,7 @@ public class ProjectsController : ControllerBase
         if (project is null) return NotFound($"Project with ID {id} not found");
         var authorizationResult = await _authorizationService.AuthorizeAsync(User, project, "ProjectMemberOrHigher");
         if (!authorizationResult.Succeeded) return Forbid();
-        var dto = await _projectService.GetByIdAsync(id);
+        var dto = await _mediator.Send(new GetProjectByIdQuery(id));
         return Ok(ApiResponse<ProjectResponseDto>.SuccessResponse(dto!));
     }
 
@@ -50,7 +55,7 @@ public class ProjectsController : ControllerBase
     public async Task<ActionResult<ApiResponse<IEnumerable<ProjectResponseDto>>>> GetAll()
     {
         var userId = UserId ?? throw new InvalidOperationException("User ID not found in claims");
-        var projects = await _projectService.GetAllForUserAsync(userId, UserRoles);
+        var projects = await _mediator.Send(new GetAllProjectQuery(userId, UserRoles));
         return Ok(ApiResponse<IEnumerable<ProjectResponseDto>>.SuccessResponse(projects));
     }
 
@@ -62,7 +67,7 @@ public class ProjectsController : ControllerBase
         if (existingProject is null) return NotFound($"Project with ID {id} not found");
         var authorizationResult = await _authorizationService.AuthorizeAsync(User, existingProject, "ProjectOwnerOrAdmin");
         if (!authorizationResult.Succeeded) return Forbid();
-        var updatedProject = await _projectService.UpdateAsync(id, updateProjectDto);
+        var updatedProject = await _mediator.Send(new UpdateProjectCommand(id, updateProjectDto));
         return Ok(ApiResponse<ProjectResponseDto>.SuccessResponse(updatedProject!, "Project updated successfully"));
     }
 
@@ -73,7 +78,7 @@ public class ProjectsController : ControllerBase
         if (existingProject is null) return NotFound($"Project with ID {id} not found");
         var authorizationResult = await _authorizationService.AuthorizeAsync(User, existingProject, "ProjectOwnerOrAdmin");
         if (!authorizationResult.Succeeded) return Forbid();
-        var isDeleted = await _projectService.DeleteAsync(id);
+        var isDeleted = await _mediator.Send(new DeleteProjectCommand(id));
         if (!isDeleted) return NotFound($"Project with ID {id} not found");
         return NoContent();
     }
