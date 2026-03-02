@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ASP_NET_22._TaskFlow_CQRS.Application.Commands.Projects;
 
-class DeleteProjectCommandHandler : IRequestHandler<DeleteProjectCommand, bool>
+public class DeleteProjectCommandHandler : IRequestHandler<DeleteProjectCommand, bool>
 {
     private readonly IProjectRepository _projectRepository;
 
@@ -15,7 +15,8 @@ class DeleteProjectCommandHandler : IRequestHandler<DeleteProjectCommand, bool>
     public async Task<bool> Handle(DeleteProjectCommand request, CancellationToken cancellationToken)
     {
         var project = await _projectRepository.FindAsync(request.Id);
-        if (project is null) return false;
+        if (project is null)
+            return false;
         await _projectRepository.RemoveAsync(project);
         return true;
     }

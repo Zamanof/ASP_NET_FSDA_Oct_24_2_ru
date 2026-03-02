@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 18
-VisualStudioVersion = 18.2.11430.68
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 01. Web App example", "ASP NET 01. Web App example\ASP NET 01. Web App example.csproj", "{434647D4-0E98-4AA8-9E43-E205D31804FA}"
 EndProject
@@ -124,6 +123,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 22. TaskFlow CQRS.Application", "ASP NET 22. TaskFlow CQRS.Application\ASP NET 22. TaskFlow CQRS.Application.csproj", "{1F185728-B5A8-467E-8432-BF7E45BF47F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 22. TaskFlow CQRS.Domain", "ASP NET 22. TaskFlow CQRS.Domain\ASP NET 22. TaskFlow CQRS.Domain.csproj", "{B45E9874-5E42-4441-92AE-31D0D83E8448}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP NET 22. TaskFlow CQRS Unit Test", "ASP NET 22. TaskFlow CQRS Unit Test\ASP NET 22. TaskFlow CQRS Unit Test.csproj", "{5D73DEE0-D48D-42C0-B8A1-C02F765FF0A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -287,6 +288,10 @@ Global
 		{B45E9874-5E42-4441-92AE-31D0D83E8448}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B45E9874-5E42-4441-92AE-31D0D83E8448}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B45E9874-5E42-4441-92AE-31D0D83E8448}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D73DEE0-D48D-42C0-B8A1-C02F765FF0A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D73DEE0-D48D-42C0-B8A1-C02F765FF0A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D73DEE0-D48D-42C0-B8A1-C02F765FF0A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D73DEE0-D48D-42C0-B8A1-C02F765FF0A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -334,6 +339,7 @@ Global
 		{1C776E04-6EA3-4A05-9051-279E9D20BF5E} = {93031AB9-6D76-4C9A-AA56-63F99D9F30A4}
 		{1F185728-B5A8-467E-8432-BF7E45BF47F9} = {93031AB9-6D76-4C9A-AA56-63F99D9F30A4}
 		{B45E9874-5E42-4441-92AE-31D0D83E8448} = {93031AB9-6D76-4C9A-AA56-63F99D9F30A4}
+		{5D73DEE0-D48D-42C0-B8A1-C02F765FF0A3} = {93031AB9-6D76-4C9A-AA56-63F99D9F30A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E4870BAB-DD25-4E3B-9ABC-EE53B6A30681}
